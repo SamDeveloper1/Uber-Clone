@@ -80,6 +80,87 @@ The request body should be in JSON format and include the following fields:
 - Ensure that the `JWT_SECRET` environment variable is set for token generation.
 - Passwords are hashed before being stored in the database.
 
+# Get User Profile Endpoint
+
+## Endpoint: `/users/profile`
+
+### Description:
+This endpoint returns the authenticated user's profile. It requires a valid JWT (sent via the `Authorization` header as `Bearer <token>` or via cookie `token`).
+
+### Method:
+`GET`
+
+### Request Headers:
+- `Authorization`: `Bearer <JWT_TOKEN>` (or cookie `token`)
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "user": {
+    "_id": "1234567890abcdef",
+    "fullName": {
+      "firstName": "John",
+      "lastName": "Doe"
+    },
+    "email": "john.doe@example.com",
+    "socketId": null
+  }
+}
+```
+
+#### Error Responses:
+
+1. **Unauthorized / Missing Token:**
+   - **Status Code:** `401 Unauthorized`
+   - **Body:**
+   ```json
+   { "message": "Unuthorized" }
+   ```
+
+### Notes:
+- The middleware checks for token blacklisting; if the token has been invalidated (e.g., after logout), access will be denied.
+
+# Logout Endpoint
+
+## Endpoint: `/users/logout`
+
+### Description:
+This endpoint logs out the authenticated user by invalidating the current JWT (typically by adding it to a blacklist). It requires a valid JWT.
+
+### Method:
+`GET`
+
+### Request Headers:
+- `Authorization`: `Bearer <JWT_TOKEN>` (or cookie `token`)
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "message": "Logged out successfully"
+}
+```
+
+#### Error Responses:
+
+1. **Unauthorized / Missing Token:**
+   - **Status Code:** `401 Unauthorized`
+   - **Body:**
+   ```json
+   { "message": "Unuthorized" }
+   ```
+
+### Notes:
+- Ensure that the `JWT_SECRET` environment variable is set for token verification.
+- After logout the token will be rejected by the auth middleware on subsequent requests.
+
 # User Login Endpoint
 
 ## Endpoint: `/users/login`
