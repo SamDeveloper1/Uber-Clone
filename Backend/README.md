@@ -229,3 +229,95 @@ The request body should be in JSON format and include the following fields:
 
 ### Notes:
 - Ensure that the `JWT_SECRET` environment variable is set for token generation.
+
+# Captain Registration Endpoint
+
+## Endpoint: `/captains/register`
+
+### Description:
+This endpoint is used to register a new captain. It validates the input data, creates a new captain in the database, and returns the captain details.
+
+### Method:
+`POST`
+
+### Request Body:
+The request body should be in JSON format and include the following fields:
+
+| Field               | Type   | Required | Description                                   |
+|---------------------|--------|----------|-----------------------------------------------|
+| `fullName.firstName`| String | Yes      | The first name of the captain (minimum 3 chars). |
+| `fullName.lastName` | String | No       | The last name of the captain (minimum 3 chars).  |
+| `email`             | String | Yes      | The email address of the captain.                |
+| `password`          | String | Yes      | The password for the captain (minimum 6 chars).  |
+| `vehicle.color`     | String | Yes      | The color of the vehicle (minimum 3 chars).      |
+| `vehicle.plate`     | String | Yes      | The plate number of the vehicle (minimum 3 chars). |
+| `vehicle.capacity`  | Number | Yes      | The capacity of the vehicle (minimum 1).         |
+| `vehicle.vehicleType` | String | Yes    | The type of the vehicle (e.g., car, motorcycle, auto). |
+
+### Example Request:
+```json
+{
+  "fullName": {
+    "firstName": "Jane",
+    "lastName": "Doe"
+  },
+  "email": "jane.doe@example.com",
+  "password": "securepassword",
+  "vehicle": {
+    "color": "Red",
+    "plate": "XYZ123",
+    "capacity": 4,
+    "vehicleType": "car"
+  }
+}
+```
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `201 Created`
+- **Body:**
+```json
+{
+  "captain": {
+    "_id": "1234567890abcdef",
+    "fullName": {
+      "firstName": "Jane",
+      "lastName": "Doe"
+    },
+    "email": "jane.doe@example.com",
+    "vehicle": {
+      "color": "Red",
+      "plate": "XYZ123",
+      "capacity": 4,
+      "vehicleType": "car"
+    }
+  }
+}
+```
+
+#### Error Responses:
+
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       {
+         "msg": "Invalid Email",
+         "param": "email",
+         "location": "body"
+       }
+     ]
+   }
+   ```
+
+2. **Missing Fields:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": "All Fields are required"
+   }
+   ```
