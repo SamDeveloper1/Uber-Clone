@@ -76,9 +76,7 @@ The request body should be in JSON format and include the following fields:
    }
    ```
 
-### Notes:
-- Ensure that the `JWT_SECRET` environment variable is set for token generation.
-- Passwords are hashed before being stored in the database.
+
 
 # Get User Profile Endpoint
 
@@ -121,8 +119,7 @@ This endpoint returns the authenticated user's profile. It requires a valid JWT 
    { "message": "Unuthorized" }
    ```
 
-### Notes:
-- The middleware checks for token blacklisting; if the token has been invalidated (e.g., after logout), access will be denied.
+
 
 # Logout Endpoint
 
@@ -157,9 +154,7 @@ This endpoint logs out the authenticated user by invalidating the current JWT (t
    { "message": "Unuthorized" }
    ```
 
-### Notes:
-- Ensure that the `JWT_SECRET` environment variable is set for token verification.
-- After logout the token will be rejected by the auth middleware on subsequent requests.
+
 
 # User Login Endpoint
 
@@ -227,8 +222,7 @@ The request body should be in JSON format and include the following fields:
    }
    ```
 
-### Notes:
-- Ensure that the `JWT_SECRET` environment variable is set for token generation.
+
 
 # Captain Registration Endpoint
 
@@ -468,4 +462,394 @@ This endpoint logs out the authenticated captain by invalidating the current JWT
    - **Body:**
    ```json
    { "message": "Unauthorized" }
+   ```
+
+
+
+# Map Routes
+
+## Get Coordinates Endpoint
+
+### Endpoint: `/maps/get-coordinates`
+
+### Description:
+This endpoint retrieves the geographical coordinates (latitude and longitude) for a given address.
+
+### Method:
+`GET`
+
+### Query Parameters:
+| Parameter | Type   | Required | Description                          |
+|-----------|--------|----------|--------------------------------------|
+| `address` | String | Yes      | The address to retrieve coordinates for. |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "lat": 28.6139,
+  "lng": 77.2090
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid value", "param": "address", "location": "query" }
+     ]
+   }
+   ```
+2. **Coordinates Not Found:**
+   - **Status Code:** `404 Not Found`
+   - **Body:**
+   ```json
+   { "message": "Coordinates not found" }
+   ```
+
+---
+
+## Get Distance and Time Endpoint
+
+### Endpoint: `/maps/get-distance-time`
+
+### Description:
+This endpoint calculates the distance and estimated travel time between two locations.
+
+### Method:
+`GET`
+
+### Query Parameters:
+| Parameter      | Type   | Required | Description                          |
+|----------------|--------|----------|--------------------------------------|
+| `origin`       | String | Yes      | The starting location.               |
+| `destination`  | String | Yes      | The destination location.            |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "distance": "15 km",
+  "time": "30 mins"
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid value", "param": "origin", "location": "query" },
+       { "msg": "Invalid value", "param": "destination", "location": "query" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
+   ```
+
+---
+
+## Get Suggestions Endpoint
+
+### Endpoint: `/maps/get-suggestions`
+
+### Description:
+This endpoint provides location suggestions based on a partial input string.
+
+### Method:
+`GET`
+
+### Query Parameters:
+| Parameter | Type   | Required | Description                          |
+|-----------|--------|----------|--------------------------------------|
+| `input`   | String | Yes      | The partial input string for suggestions. |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+[
+  "New Delhi, India",
+  "Delhi University, India",
+  "Delhi Airport, India"
+]
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid value", "param": "input", "location": "query" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
+   ```
+
+# Ride Routes
+
+## Create Ride Endpoint
+
+### Endpoint: `/rides/create`
+
+### Description:
+This endpoint allows a user to create a new ride request.
+
+### Method:
+`POST`
+
+### Request Body:
+| Parameter      | Type   | Required | Description                          |
+|----------------|--------|----------|--------------------------------------|
+| `pickup`       | String | Yes      | The pickup address.                  |
+| `destination`  | String | Yes      | The destination address.             |
+| `vehicleType`  | String | Yes      | The type of vehicle (e.g., car, auto, motorcycle). |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `201 Created`
+- **Body:**
+```json
+{
+  "_id": "rideId",
+  "pickup": "Pickup Address",
+  "destination": "Destination Address",
+  "vehicleType": "car",
+  "status": "pending"
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid pickup address", "param": "pickup", "location": "body" },
+       { "msg": "Invalid destination address", "param": "destination", "location": "body" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
+   ```
+
+---
+
+## Get Fare Endpoint
+
+### Endpoint: `/rides/get-fare`
+
+### Description:
+This endpoint calculates the estimated fare for a ride based on the pickup and destination addresses.
+
+### Method:
+`GET`
+
+### Query Parameters:
+| Parameter      | Type   | Required | Description                          |
+|----------------|--------|----------|--------------------------------------|
+| `pickup`       | String | Yes      | The pickup address.                  |
+| `destination`  | String | Yes      | The destination address.             |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "fare": 150
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid pickup address", "param": "pickup", "location": "query" },
+       { "msg": "Invalid destination address", "param": "destination", "location": "query" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
+   ```
+
+---
+
+## Confirm Ride Endpoint
+
+### Endpoint: `/rides/confirm`
+
+### Description:
+This endpoint allows a captain to confirm a ride request.
+
+### Method:
+`POST`
+
+### Request Body:
+| Parameter      | Type   | Required | Description                          |
+|----------------|--------|----------|--------------------------------------|
+| `rideId`       | String | Yes      | The ID of the ride to confirm.       |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "_id": "rideId",
+  "status": "confirmed"
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid ride Id", "param": "rideId", "location": "body" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
+   ```
+
+---
+
+## Start Ride Endpoint
+
+### Endpoint: `/rides/start-ride`
+
+### Description:
+This endpoint allows a captain to start a ride after verifying the OTP.
+
+### Method:
+`GET`
+
+### Query Parameters:
+| Parameter      | Type   | Required | Description                          |
+|----------------|--------|----------|--------------------------------------|
+| `rideId`       | String | Yes      | The ID of the ride to start.         |
+| `otp`          | String | Yes      | The OTP for ride verification.       |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "_id": "rideId",
+  "status": "in-progress"
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid ride id", "param": "rideId", "location": "query" },
+       { "msg": "Invalid OTP", "param": "otp", "location": "query" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
+   ```
+
+---
+
+## End Ride Endpoint
+
+### Endpoint: `/rides/end-ride`
+
+### Description:
+This endpoint allows a captain to end a ride.
+
+### Method:
+`POST`
+
+### Request Body:
+| Parameter      | Type   | Required | Description                          |
+|----------------|--------|----------|--------------------------------------|
+| `rideId`       | String | Yes      | The ID of the ride to end.           |
+
+### Responses:
+
+#### Success Response:
+- **Status Code:** `200 OK`
+- **Body:**
+```json
+{
+  "_id": "rideId",
+  "status": "completed"
+}
+```
+
+#### Error Responses:
+1. **Validation Errors:**
+   - **Status Code:** `400 Bad Request`
+   - **Body:**
+   ```json
+   {
+     "errors": [
+       { "msg": "Invalid ride id", "param": "rideId", "location": "body" }
+     ]
+   }
+   ```
+2. **Internal Server Error:**
+   - **Status Code:** `500 Internal Server Error`
+   - **Body:**
+   ```json
+   { "message": "Internal server error" }
    ```
