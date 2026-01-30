@@ -1,5 +1,6 @@
 import React, { useRef, useState, useEffect, use, useContext } from "react";
 import { useGSAP } from "@gsap/react";
+
 import gsap from "gsap";
 import "remixicon/fonts/remixicon.css";
 import LocationSearchPanel from "../components/LocationSearchPanel";
@@ -11,7 +12,7 @@ import { UserDataContext } from "../context/UserContext";
 import {SocketContext} from "../context/SocketContext";
 
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import LiveTracking from "../components/Livetracking";
 const Home = () => {
   const navigate = useNavigate();
@@ -209,14 +210,16 @@ const Home = () => {
 
   return (
     <div className="h-screen relative overflow-hidden">
-      <img
-        className="w-16 absolute left-5 top-5"
-        src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
-        alt=""
-      />
-      <div>
-        <LiveTracking/>
+      <div className="fixed p-4 top-0 flex justify-end items-center w-screen z-50">
+        
+        <Link
+          to="/login"
+          className="w-10 h-10 bg-white flex justify-center items-center rounded-full z-50"
+        >
+          <i className="text-lg ri-logout-box-r-line"></i>
+        </Link>
       </div>
+      <LiveTracking />
       <div className="flex flex-col justify-end h-screen absolute top-0 w-full">
         <div className="h-[35%] bg-white relative top-0 w-full p-5">
           <h4

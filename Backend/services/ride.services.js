@@ -94,6 +94,9 @@ module.exports.startRide = async ({rideId, otp, captain})=>{
   if(ride.status != "accepted"){
     throw new Error("Ride not Accepted");
   }
+  if(ride.otp!=otp){
+    throw new Error("Entered Wrong OTP");
+  }
   await rideModel.findOneAndUpdate({_id: rideId},{
     status: "ongoing"
   })
