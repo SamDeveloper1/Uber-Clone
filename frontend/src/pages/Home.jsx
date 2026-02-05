@@ -222,9 +222,7 @@ const Home = () => {
         <div className="fixed p-3 md:p-4 top-0 flex justify-end items-center w-full md:max-w-md z-[99999] pointer-events-none">
           <Link
             to="/logout"
-            onClick={() => {
-              console.log("hey")
-            }}
+            
             className="w-9 h-9 md:w-10 md:h-10 bg-white flex justify-center items-center rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-gray-50 active:scale-95 pointer-events-auto"
           >
             <i className="text-base md:text-lg ri-logout-box-r-line"></i>

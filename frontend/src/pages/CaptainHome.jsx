@@ -92,7 +92,7 @@ const CaptainHome = () => {
             alt=""
           />
           <Link
-            to="/captain-login"
+            to="/captain-logout"
             className="w-10 h-10 bg-white flex justify-center items-center rounded-full"
           >
             <i className="text-lg ri-logout-box-r-line"></i>

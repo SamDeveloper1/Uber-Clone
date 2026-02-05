@@ -44,16 +44,25 @@ module.exports.loginCaptain = async(req,res,next)=>{
         return res.status(401).json({message: "Invalid password"})
     }
     const token = captain.generateAuthToken();
-    res.cookie("token",token)
-    res.status(200).json({token, captain})
+       res.cookie("captain-token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 24 * 60 * 60 * 1000
+     });    res.status(200).json({token, captain})
 }
 module.exports.getCaptainProfile = async(req,res,next)=>{
     res.status(200).json({captain: req.captain})
 }
 module.exports.logoutCaptain = async(req,res,next)=>{
-    const token = req.cookies.token || req.headers.authorization?.split(' ')[1];
+    res.clearCookie("captain-token", {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax'
+      }); 
+    const token = req.cookies["captain-token"] || req.headers.authorization?.split(' ')[1];
     await blacklistTokenModel.create({token});
-    res.clearCookie("token");
+       
     res.status(200).json({message: "Loggout Successfully"})
 
 }
