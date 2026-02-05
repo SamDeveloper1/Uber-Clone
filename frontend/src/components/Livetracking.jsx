@@ -3,7 +3,15 @@ import { LoadScript, GoogleMap, Marker } from '@react-google-maps/api'
 
 const containerStyle = {
     width: '100%',
-    height: '100%', 
+    height: '100%',
+    pointerEvents: 'none' // Add this - allows clicks to pass through
+};
+
+const mapOptions = {
+    // Re-enable pointer events for the map itself
+    gestureHandling: 'greedy',
+    // Optional: disable UI controls if you want
+    // disableDefaultUI: true,
 };
 
 const center = {
@@ -31,34 +39,20 @@ const LiveTracking = () => {
 
         return () => navigator.geolocation.clearWatch(watchId);
     }, []);
-    useEffect(() => {
-        const updatePosition = () => {
-            navigator.geolocation.getCurrentPosition((position) => {
-                const { latitude, longitude } = position.coords;
-
-                setCurrentPosition({
-                    lat: latitude,
-                    lng: longitude
-                });
-            });
-        };
-
-        updatePosition(); 
-
-        const intervalId = setInterval(updatePosition, 1000); 
-
-    }, []);
 
     return (
-        <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
-            <GoogleMap
-                mapContainerStyle={containerStyle}
-                center={currentPosition}
-                zoom={15}
-            >
-                <Marker position={currentPosition} />
-            </GoogleMap>
-        </LoadScript>
+        <div style={{ pointerEvents: 'none', width: '100%', height: '100%' }}>
+            <LoadScript googleMapsApiKey={import.meta.env.VITE_GOOGLE_MAPS_API_KEY}>
+                <GoogleMap
+                    mapContainerStyle={{ ...containerStyle, pointerEvents: 'auto' }}
+                    center={currentPosition}
+                    zoom={15}
+                    options={mapOptions}
+                >
+                    <Marker position={currentPosition} />
+                </GoogleMap>
+            </LoadScript>
+        </div>
     )
 }
 

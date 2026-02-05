@@ -219,14 +219,18 @@ const Home = () => {
     <div className="h-screen relative overflow-hidden flex justify-center items-center bg-gray-50">
       <div className="h-screen w-full md:max-w-md relative overflow-hidden bg-white md:shadow-2xl">
         
-        <div className="fixed p-3 md:p-4 top-0 flex justify-end items-center w-full md:max-w-md z-50">
+        <div className="fixed p-3 md:p-4 top-0 flex justify-end items-center w-full md:max-w-md z-[99999] pointer-events-none">
           <Link
-            to="/login"
-            className="w-9 h-9 md:w-10 md:h-10 bg-white flex justify-center items-center rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-gray-50 active:scale-95"
+            to="/logout"
+            onClick={() => {
+              console.log("hey")
+            }}
+            className="w-9 h-9 md:w-10 md:h-10 bg-white flex justify-center items-center rounded-full shadow-md hover:shadow-lg transition-all duration-200 hover:bg-gray-50 active:scale-95 pointer-events-auto"
           >
             <i className="text-base md:text-lg ri-logout-box-r-line"></i>
           </Link>
         </div>
+        
         
         <LiveTracking />
         
