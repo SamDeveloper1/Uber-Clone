@@ -41,11 +41,9 @@ const CaptainHome = () => {
     }
     const locationInterval = setInterval(updateLocation,10000);
     updateLocation();
-    // return () => clearInterval(locationInterval)
 
   },[]);
     socket.on("new-ride",(data)=>{
-      // console.log(data);
       setRide(data);
       setRidePopupPanel(true)
 
@@ -53,7 +51,6 @@ const CaptainHome = () => {
     async function confirmRide(){
       const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/rides/confirm`,{
          rideId: ride._id,
-        //  captainId: captain._id
       },{
         headers: {
           Authorization: `Bearer ${localStorage.getItem("captain-token")}`
@@ -86,9 +83,9 @@ const CaptainHome = () => {
     }
   },[confirmRidePopupPanel]);
   return (
-    <div>
-      <div className="h-screen">
-        <div className="fixed p-6 top-0 flex justify-between items-center w-screen">
+    <div className="flex justify-center items-center min-h-screen bg-gray-100">
+      <div className="h-screen w-full max-w-md bg-white relative">
+        <div className="fixed p-6 top-0 flex justify-between items-center w-full max-w-md z-10">
           <img
             className="w-16"
             src="https://upload.wikimedia.org/wikipedia/commons/c/cc/Uber_logo_2018.png"
@@ -96,7 +93,7 @@ const CaptainHome = () => {
           />
           <Link
             to="/captain-login"
-            className="w-10 h-10  bg-white flex justify-center items-center rounded-full"
+            className="w-10 h-10 bg-white flex justify-center items-center rounded-full"
           >
             <i className="text-lg ri-logout-box-r-line"></i>
           </Link>
@@ -112,14 +109,14 @@ const CaptainHome = () => {
         <div className="h-2/5 p-6 bg-white border-white rounded-2xl">
           <CaptainDetails />
         </div>
-        <div ref={ridePopupRef}  className="fixed z-10  bottom-0 w-full translate-y-full bg-white px-3 py-6 pt-12 " >
+        <div ref={ridePopupRef}  className="fixed z-10 bottom-0 w-full max-w-md translate-y-full bg-white px-3 py-6 pt-12 " >
           <RidingPopup
             ride={ride}
             confirmRide={confirmRide}
            setRidePopupPanel={setRidePopupPanel} setConfirmRidePopupPanel={setConfirmRidePopupPanel}/>
           
         </div>
-        <div ref={confirmRidePopupRef}  className="fixed z-10 h-screen  bottom-0 w-full translate-y-full bg-white px-3 py-6 pt-12 " >
+        <div ref={confirmRidePopupRef}  className="fixed z-10 h-screen bottom-0 w-full max-w-md translate-y-full bg-white px-3 py-6 pt-12 " >
           <ConfirmRidePopup
            ride={ride}
            setConfirmRidePopupPanel={setConfirmRidePopupPanel} setRidePopupPanel={setRidePopupPanel}/>

@@ -28,7 +28,7 @@ const rideSchema = new Schema({
         default:"pending"
     },
     duration:{
-        type:Number,
+        type:String,
     },
     distance:{
         type:Number,

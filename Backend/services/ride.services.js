@@ -49,7 +49,17 @@ function getOtp(num) {
         const otp = crypto.randomInt(Math.pow(10, num - 1), Math.pow(10, num)).toString();
         return otp;
 }
+async function getRideDuration(pickup, destination) {
+  const result = await mapService.getDistanceTime(pickup, destination);
 
+  if (!result?.duration?.text) {
+    throw new Error("Duration not found");
+  }
+
+  return result.duration.text; 
+}
+
+  
 module.exports.createRide = async ({
   user,
   pickup,
@@ -64,6 +74,7 @@ module.exports.createRide = async ({
     user,
     pickup,
     destination,
+    duration: await getRideDuration(pickup,destination),
     fare: fare[vehicleType],
     otp: getOtp(6)
   });

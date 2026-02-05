@@ -41,14 +41,14 @@ const ConfirmRidePopup = (props) => {
           />
           <h2 className="text-lg font-medium capitalize">{props.ride?.user.fullName.firstName}</h2>
         </div>
-        <h5 className="font-semibold text-lg">2.2 Km</h5>
+        <h5 className="font-semibold text-lg">2.2Km</h5>
       </div>
       <div className="flex gap-2 flex-col justify-between items-center ">
         <div className="w-full mt-3">
           <div className="flex items-center gap-5 p-3 border-b-2">
             <i className="text-sm ri-map-pin-2-fill"></i>
             <div>
-              <h3 className="text-medium font-semibold">562/11-A</h3>
+              <h3 className="text-medium font-semibold">Pickup</h3>
               <p className="text-sm text-gray-600">
                 {props.ride?.pickup}
               </p>
@@ -57,7 +57,7 @@ const ConfirmRidePopup = (props) => {
           <div className="flex items-center gap-5 p-3 border-b-2">
             <i className="text-sm ri-square-fill"></i>
             <div>
-              <h3 className="text-medium font-semibold">Third Wave Coffee</h3>
+              <h3 className="text-medium font-semibold">Drop</h3>
               <p className="text-sm text-gray-600 ">
                 {props.ride?.destination}
               </p>

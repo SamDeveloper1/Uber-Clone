@@ -25,21 +25,21 @@ const CaptainDetails = () => {
               <p className="text-sm text-gray-600 font-base">Earned</p>
             </div>
           </div>
-          <div className="bg-gray-100 rounded-xl flex justify-center items-start gap-5 p-3 mt-7">
+          <div className="bg-gray-100 rounded-xl flex justify-center items-start gap-3 sm:gap-5 p-3 mt-7">
             <div className="text-center">
-              <i className="text-3xl mb-2 font-thin ri-time-line"></i>
-              <h3 className="text-lg font-medium">10.2</h3>
-              <p className="text-sm text-gray-600">HOURS ONLINE</p>
+              <i className="text-2xl sm:text-3xl mb-2 font-thin ri-time-line"></i>
+              <h3 className="text-base sm:text-lg font-medium">10.2</h3>
+              <p className="text-xs sm:text-sm text-gray-600">HOURS ONLINE</p>
             </div>
             <div className="text-center">
-              <i className="text-3xl mb-2 font-thin ri-speed-up-fill"></i>
-              <h3 className="text-lg font-medium">30</h3>
-              <p className="text-sm text-gray-600">TOTAL DISTANCE</p>
+              <i className="text-2xl sm:text-3xl mb-2 font-thin ri-speed-up-fill"></i>
+              <h3 className="text-base sm:text-lg font-medium">30</h3>
+              <p className="text-xs sm:text-sm text-gray-600">TOTAL DISTANCE</p>
             </div>
             <div className="text-center">
-              <i className="text-3xl mb-2 font-thin ri-article-line"></i>
-              <h3 className="text-lg font-medium">20</h3>
-              <p className="text-sm text-gray-600">TOTAL JOBS</p>
+              <i className="text-2xl sm:text-3xl mb-2 font-thin ri-article-line"></i>
+              <h3 className="text-base sm:text-lg font-medium">20</h3>
+              <p className="text-xs sm:text-sm text-gray-600">TOTAL JOBS</p>
             </div>
           </div>
     </div>
